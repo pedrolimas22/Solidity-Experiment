@@ -1,0 +1,76 @@
+<!Doctype html>
+<html>
+
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+  <script src="./main.js"></script>
+  
+
+<style>
+.btn-group button {
+  background-color: #04AA6D; /* Green background */
+  border: 1px solid green; /* Green border */
+  margin-top: 50px;
+  margin-bottom: 50px;
+  color: white; /* White text */
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #3e8e41;
+}
+
+</style>
+<body>
+
+<h1>Set de Botões para Teste</h1>
+
+<div></div>
+
+<div class="btn-group">
+    <button id="b5" onclick="login(); showButtons()">Login</button>
+    <button id="b0" onclick="createVehicle()">Criar</button>
+    <button id="b1" onclick="getVehiclesToRent()">Ler</button>
+    <button id="b2" onclick="delivered()">Editar</button>    
+    <button onclick="delVehicle()">Eliminar</button>
+  </div>
+  
+
+  <div class = "">
+    <div>Id:  <input type="number" id="id"></div>
+    <div>Price: <input type="number" id="price"></div>
+    <select name="available" id="available">
+      <option value="true">True</option>
+      <option value="false">False</option>
+    </select></div>
+  
+
+  <div class="btn-group">
+      <button id="b3" onclick="carRenting()">Iniciar aluguer</button>
+      <button id="b4" onclick="killRenting()">Finalizar aluguer</button>      
+      <button id="b6" onclick="getVehiclesToRent()">Por Alugar</button>      
+      <button id="b7" onclick="getVehiclesRented()">A Alugar</button>
+    </div>
+
+   <div> <textarea id='log' rows=10 cols=60 autofocus>
+    </textarea>
+    </div>
+  
+</body>
+
+
+</html>

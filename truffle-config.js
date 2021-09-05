@@ -25,7 +25,9 @@ module.exports = {
           confirmations: 5,
           networkCheckTimeout: 100000,
           timeoutBlocks: 500,
-          skipDryRun: true
+          skipDryRun: true,
+          gasPrice: 800000000,
+          gas: 4700000
         },
         goerli: {
           provider: () => new HDWalletProvider(

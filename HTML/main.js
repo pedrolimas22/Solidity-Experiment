@@ -1,6 +1,6 @@
 Moralis.initialize("M7NJ9bZG15TvRFuUiiceMegTlDHVwawVD8pjay6Q"); // id da app
 Moralis.serverURL = 'https://lwvln3epkhpk.bigmoralis.com:2053/server' // url do moralis
-const contractAddress = "0x2CfB6F4310600D23693cBd13f043A14835A56Dee"
+const contractAddress = "0xf722a4a10E460E4A7628A077a2aE98Dc1B131735"
 const contractAbi = [
   {
     "inputs": [],
@@ -191,41 +191,34 @@ let user;
 let userAddress;
 
 var txt = document.getElementById('log');
-txt.value = "";
 
-init =  async () =>  {
+
+async function init() {
   web3 = await Moralis.Web3.enable();
   console.log('web3 initialized');
 
-  contract = new web3.eth.Contract(contractAbi, contractAddress);   
+  contract = new web3.eth.Contract(contractAbi, contractAddress); 
+  console.log(txt)  
+  //const text = ['ol','sf','fadsfads']
+  //generate_table();
+  //txt.value = "";
   //Moralis.Web3.authenticate().then(function (user) {
     //console.log(user.get('ethAddress'))
   //})
   
 } 
 
-login = async () => {
+async function login() {
   try {
-      await Moralis.Web3.authenticate()
-      user = Moralis.User.current();
-  console.log(user)
+    await Moralis.Web3.authenticate();
+    user = Moralis.User.current();
+    console.log(user)
     userAddress = user.get("ethAddress");
       //initUser()
   } catch (error) {
       alert(error)
   }
 }
-
-function packageStart() {
-   
-  console.log("created");
-}
-
-// packageStart = async () => {
-  
-//   contract = new web3.eth.Contract(contractAbi, contractAddress);    
-//   console.log("created");
-// }
 
 async function createVehicle() {
   try{
@@ -265,29 +258,30 @@ async function getVehiclesToRent() {
   
   let carsToRent = [];
   for (let i = 0; i < results.length; i++) {
-    carsToRent.push(results[i].attributes)
-    txt.value += carsToRent[i];
+    carsToRent.push(results[i].attributes)    
   }
   console.log(carsToRent);
-  
+  //txt.value += carsToRent;
+  generate_table(carsToRent);
 
 }
 
 async function getVehiclesRented() {
 
-    const query = new Moralis.Query("Cars");
-    query.equalTo("available", false);
-    const results = await query.find();
+  const query = new Moralis.Query("Cars");
+  query.equalTo("available", false);
+  const results = await query.find();
 
-    // Do something with the returned Moralis.Object values
-    let carsRented = [];
-    for (let i = 0; i < results.length; i++) {
-      carsRented.push(results[i].attributes)
+  // Do something with the returned Moralis.Object values
+  let carsRented = [];
+  for (let i = 0; i < results.length; i++) {
+    carsRented.push(results[i].attributes)
       
-    }
-    console.log(carsToRent)
-  
   }
+  console.log(carsToRent)
+  generate_table(carsToRent);
+  
+}
 
 async function carRenting() {
 
@@ -322,6 +316,55 @@ function showButtons () {
         b4.style.display = "block";
     var b6 = document.getElementById("b6") 
         b6.style.display = "block";
+}
+
+function generate_table(arrayToDisplay) {
+  // get the reference for the body
+  var body = document.getElementsByTagName("table")[0];
+
+  // creates a <table> element and a <tbody> element
+  var tbl = document.createElement("table");
+  var tblBody = document.createElement("tbody");
+
+  console.log(arrayToDisplay)
+  console.log(arrayToDisplay.length)
+
+  var columns = ['uid','price','owner','available'];
+  // creating all cells
+  for (var i = 0; i < arrayToDisplay.length+1; i++) {
+    // creates a table row
+    var row = document.createElement("tr");
+  
+      for (var j = 0; j < columns.length; j++) {
+        // Create a <td> element and a text node, make the text
+        // node the contents of the <td>, and put the <td> at
+        // the end of the table row
+        if(i==0){
+          var cell = document.createElement("td");
+          var cellText = document.createTextNode(columns[j]);
+          cell.appendChild(cellText);
+          row.appendChild(cell);
+        }else{
+          console.log(arrayToDisplay[i-1][columns[j]])
+          var cell = document.createElement("td");
+          var cellText = document.createTextNode(arrayToDisplay[i-1][columns[j]]);
+          cell.appendChild(cellText);
+          row.appendChild(cell);
+        }
+      }
+    
+    
+
+    // add the row to the end of the table body
+    tblBody.appendChild(row);
+  }
+
+  // put the <tbody> in the <table>
+  tbl.appendChild(tblBody);
+  // appends <table> into <body>
+  body.appendChild(tbl);
+  // sets the border attribute of tbl to 2;
+  tbl.setAttribute("border", "2");
 }
 
 init()

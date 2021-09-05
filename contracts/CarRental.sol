@@ -149,7 +149,7 @@ contract CarRental
         if(eventCode == 1){
             emit ExcessVelocity(id, description);
         }else if(eventCode == 2){
-            emit SuddenBreak(id, description);(id, description);
+            emit SuddenBreak(id, description);
         }else if(eventCode == 3){
             emit Accident(id, description);
         }else if(eventCode == 4){

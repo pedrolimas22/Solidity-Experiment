@@ -244,7 +244,7 @@ async function editVehicle() {
   const price = document.getElementById("price").value;
   const status = document.getElementById("available").value;
   const isTrueSet = (status == 'True');
-  const receipt = await contract.methods.editVehicle(id, price, isTrueSet).send({from: userAddress});    
+  const receipt = await contract.methods.editVehicle(id, web3.utils.toWei(price), isTrueSet).send({from: userAddress});    
   console.log(receipt)
   console.log("À escuta de status.")
 }
@@ -252,8 +252,9 @@ async function editVehicle() {
 async function getVehiclesToRent() {
 
   const query = new Moralis.Query("Cars");
-  query.equalTo("available", true);
+  query.equalTo("isAvailable", true);
   const results = await query.find();
+  console.log(results)
   // Do something with the returned Moralis.Object values
   
   let carsToRent = [];
@@ -269,7 +270,7 @@ async function getVehiclesToRent() {
 async function getVehiclesRented() {
 
   const query = new Moralis.Query("Cars");
-  query.equalTo("available", false);
+  query.equalTo("isAvailable", false);
   const results = await query.find();
 
   // Do something with the returned Moralis.Object values
@@ -286,9 +287,7 @@ async function getVehiclesRented() {
 async function carRenting() {
 
   const id = document.getElementById("id").value;
-
-
-  const receipt = await contract.methods.carRenting(id).send({from: userAddress});    
+  const receipt = await contract.methods.carRenting(id).send({from: userAddress})    
   console.log(receipt)
   console.log("À escuta de status.")
 }
@@ -300,7 +299,6 @@ async function killRenting() {
 
   const receipt = await contract.methods.killRenting(id).send({from: userAddress});    
   console.log(receipt)
-  console.log("À escuta de status.")
 }
 
 function showButtons () { 
@@ -329,7 +327,7 @@ function generate_table(arrayToDisplay) {
   console.log(arrayToDisplay)
   console.log(arrayToDisplay.length)
 
-  var columns = ['uid','price','owner','available'];
+  var columns = ['uid','price','owner','isAvailable'];
   // creating all cells
   for (var i = 0; i < arrayToDisplay.length+1; i++) {
     // creates a table row
@@ -352,8 +350,6 @@ function generate_table(arrayToDisplay) {
           row.appendChild(cell);
         }
       }
-    
-    
 
     // add the row to the end of the table body
     tblBody.appendChild(row);

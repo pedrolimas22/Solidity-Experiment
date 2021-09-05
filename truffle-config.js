@@ -25,9 +25,7 @@ module.exports = {
           confirmations: 5,
           networkCheckTimeout: 100000,
           timeoutBlocks: 500,
-          skipDryRun: true,
-          gasPrice: 800000000,
-          gas: 4700000
+          skipDryRun: true
         },
         goerli: {
           provider: () => new HDWalletProvider(
@@ -44,7 +42,8 @@ module.exports = {
         
     compilers: {
         solc: {
-            version: "0.7.0"
+            version: "0.7.0",
         }
-    }
-};
+
+  }  
+}

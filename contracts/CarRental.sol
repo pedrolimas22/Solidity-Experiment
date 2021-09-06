@@ -6,21 +6,21 @@ contract CarRental
 {
     struct RentalCar { // Estrutura destinada às credenciais do carro alugado
         uint256 id;
-        bool isAvailable;
-        bool isActive;
+        bool isAvailable; // disponibilidade 
+        bool isActive; // 
         uint256 price;
         address owner;
         uint256 activeRentalId;
     }
 
     struct Rental{ // Estrutura destinada às propriedades do aluguer
-        uint256 id;
-        uint256 carId;
-        uint256 price;
-        uint256 timeOfRental;
-        uint256 timeOfDelivery;
-        uint256[] eventsOccured;
-        bool isFinished;
+        uint256 id; // identificador do aluguer
+        uint256 carId; // id do carro
+        uint256 price; // preço
+        uint256 timeOfRental; // timestamp do inicio do aluguer
+        uint256 timeOfDelivery; // timestamp do fim do aluguer
+        uint256[] eventsOccured; // eventos ocorridos 
+        bool isFinished; // booleana correspondente ao fim do aluguer
     }
 
     RentalCar[] internal cars; // Inicialização das estruturas
@@ -82,11 +82,12 @@ contract CarRental
     }
 
 
-    // Function to change to Shipped
+    // Função de editar o veículo
+
     function editVehicle(uint256 id, uint256 price, bool status) public {
         // Obrigatório para a execução da função
         require(cars[id].isActive == true, "car is inactive");
-        require(cars[id].isAvailable == true, "car is unavailable");
+        // require(cars[id].isAvailable == true, "car is unavailable");
         require(msg.sender == cars[id].owner, "not the car's owner");
 
         cars[id].price = price;
@@ -94,7 +95,8 @@ contract CarRental
 
         emit EditedCar(id, status, price);
     }
-
+    
+    // Função para iniciar o aluguer
     function carRenting(uint256 id) public payable returns (string memory) {
         // Obrigatório para a execução da função
         require(cars[id].isActive == true, "car is inactive");
@@ -103,8 +105,6 @@ contract CarRental
         require(cars[id].isAvailable == true);
         
         uint256 rentalId = rentals.length;
-        
-        // Inicialização da estrutura do aluguer
 
         Rental memory rental = Rental(
             rentalId,
@@ -124,6 +124,7 @@ contract CarRental
         emit RentStarted(rentalId, id, cars[id].price, block.timestamp, 0, new uint256[](0), false); // registar o evento
     }
     
+    // Função para terminar o aluguer
     function killRenting(uint256 id) public returns (string memory) { // Função para eliminar o aluguer
         // Obrigatório para a execução da função
         require(cars[id].isActive == true, "car is inactive");
@@ -135,12 +136,12 @@ contract CarRental
         rentals[cars[id].activeRentalId].isFinished = true;
 
         msg.sender.transfer(cars[id].price);
-        cars[id].isAvailable = true; // 
+        cars[id].isAvailable = true; 
 
         emit RentEnded(cars[id].activeRentalId, id, block.timestamp, rentals[cars[id].activeRentalId].eventsOccured, true);
     }
 
-    
+    // Função para associar os eventos ao veículo alugado
     function emitEvent(uint256 id, string memory description, uint8 eventCode) public{
         // Obrigatório para a execução da função
         require(cars[id].isActive == false, "car is inactive");

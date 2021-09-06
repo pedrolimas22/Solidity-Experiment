@@ -1,6 +1,6 @@
 Moralis.initialize("M7NJ9bZG15TvRFuUiiceMegTlDHVwawVD8pjay6Q"); // id da app
 Moralis.serverURL = 'https://lwvln3epkhpk.bigmoralis.com:2053/server' // url do moralis
-const contractAddress = "0xf722a4a10E460E4A7628A077a2aE98Dc1B131735"
+const contractAddress = "0xf722a4a10E460E4A7628A077a2aE98Dc1B131735" // endereço do contrato
 const contractAbi = [
   {
     "inputs": [],
@@ -192,7 +192,7 @@ let userAddress;
 
 var txt = document.getElementById('log');
 
-
+// Função de inicialização
 async function init() {
   web3 = await Moralis.Web3.enable();
   console.log('web3 initialized');
@@ -208,6 +208,7 @@ async function init() {
   
 } 
 
+// Função de Login com a Metamask
 async function login() {
   try {
     await Moralis.Web3.authenticate();
@@ -220,18 +221,20 @@ async function login() {
   }
 }
 
+// Função JS de criação do veículo
 async function createVehicle() {
-  try{
+  try {
     
     const price = document.getElementById("price").value;
     const receipt = await contract.methods.createVehicle(web3.utils.toWei(price)).send({from: userAddress});
     console.log(receipt)
-  }catch(e){
+  } catch(e) {
     console.log(e);
   }
-  console.log("À escuta de shipped.")
+  console.log("À escuta de createVehicle.")
 }
 
+// Função JS para eliminar o veículo
 async function delVehicle() {
   const idToDelete = document.getElementById("id").value;
   const receipt = await contract.methods.delVehicle(idToDelete).send({from: userAddress});
@@ -239,6 +242,7 @@ async function delVehicle() {
   console.log("À escuta de delivered.")
 }
 
+// Função JS para edição do veículo
 async function editVehicle() {
   const id = document.getElementById("id").value;
   const price = document.getElementById("price").value;
@@ -249,6 +253,7 @@ async function editVehicle() {
   console.log("À escuta de status.")
 }
 
+// Função JS com query para leitura dos veículos para aluguer
 async function getVehiclesToRent() {
 
   const query = new Moralis.Query("Cars");
@@ -267,6 +272,7 @@ async function getVehiclesToRent() {
 
 }
 
+// Função JS com query para leitura dos veículos em aluguer
 async function getVehiclesRented() {
 
   const query = new Moralis.Query("Cars");
@@ -279,11 +285,12 @@ async function getVehiclesRented() {
     carsRented.push(results[i].attributes)
       
   }
-  console.log(carsToRent)
-  generate_table(carsToRent);
+  console.log(carsRented)
+  generate_table(carsRented);
   
 }
 
+// Função JS para iniciar o aluger
 async function carRenting() {
 
   const id = document.getElementById("id").value;
@@ -292,6 +299,7 @@ async function carRenting() {
   console.log("À escuta de status.")
 }
 
+// Função JS para terminar o aluger
 async function killRenting() {
 
   const id = document.getElementById("id").value;
@@ -301,21 +309,23 @@ async function killRenting() {
   console.log(receipt)
 }
 
-function showButtons () { 
-    var b0 = document.getElementById("b0")
-        b0.style.display = "block";
-    var b1 = document.getElementById("b1")
-        b1.style.display = "block";
-    var b2 = document.getElementById("b2")
-        b2.style.display = "block";
-    var b3 = document.getElementById("b3")
-        b3.style.display = "block";
-    var b4 = document.getElementById("b4")
-        b4.style.display = "block";
-    var b6 = document.getElementById("b6") 
-        b6.style.display = "block";
-}
 
+// function showButtons () { 
+//     var b0 = document.getElementById("b0")
+//         b0.style.display = "block";
+//     var b1 = document.getElementById("b1")
+//         b1.style.display = "block";
+//     var b2 = document.getElementById("b2")
+//         b2.style.display = "block";
+//     var b3 = document.getElementById("b3")
+//         b3.style.display = "block";
+//     var b4 = document.getElementById("b4")
+//         b4.style.display = "block";
+//     var b6 = document.getElementById("b6") 
+//         b6.style.display = "block";
+// }
+
+// Função JS para a geração de uma tabela dinâmica
 function generate_table(arrayToDisplay) {
   // get the reference for the body
   var body = document.getElementsByTagName("table")[0];
